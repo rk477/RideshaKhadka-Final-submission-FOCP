@@ -12,6 +12,14 @@ def encrypt(text):
 def add_user():
     # Add a new user to the password file
     username = input("Enter new username: ")
+
+    # Check if username already exists
+    with open(PASSWORD_FILE, 'r') as f:
+        for line in f:
+            if line.startswith(f"{username}:"):
+                print("Username already exists. Cannot add user.")
+                return
+
     real_name = input("Enter real name: ")
     password = input("Enter password: ")
     password = encrypt(password)
@@ -19,6 +27,7 @@ def add_user():
     with open(PASSWORD_FILE, 'a') as f:
         f.write(f"{username}:{real_name}:{password}\n")
     print("User Created.")
+
 
 def delete_user():
     # Delete a user from the password file
@@ -44,14 +53,39 @@ def delete_user():
 def change_password():
     # Change user password
     username = input("User: ")
+
+    # Check if username exists
+    username_exists = False
+    with open(PASSWORD_FILE, 'r') as f:
+        for line in f:
+            user_info = line.strip().split(':')
+            if user_info[0] == username:
+                username_exists = True
+                break
+
+    if not username_exists:
+        print("Username does not exist.")
+        return
+
     current_password = encrypt(getpass.getpass("Current Password: "))
+
+    user_found = False
+    with open(PASSWORD_FILE, 'r') as f:
+        lines = f.readlines()
+
+    for line in lines:
+        if line.startswith(f"{username}:") and line.endswith(f":{current_password}\n"):
+            user_found = True
+            break
+
+    if not user_found:
+        print("Current password is incorrect.")
+        return
+
     new_password = encrypt(getpass.getpass("New Password: "))
     confirm_password = encrypt(getpass.getpass("Confirm: "))
 
     if new_password == confirm_password:
-        with open(PASSWORD_FILE, 'r') as f:
-            lines = f.readlines()
-
         with open(PASSWORD_FILE, 'w') as f:
             for line in lines:
                 if line.startswith(f"{username}:") and line.endswith(f":{current_password}\n"):
@@ -62,6 +96,7 @@ def change_password():
         print("Password changed.")
     else:
         print("Passwords do not match. Nothing changed.")
+
 
 def login():
     # User login

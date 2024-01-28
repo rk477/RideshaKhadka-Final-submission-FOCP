@@ -13,7 +13,8 @@ def add_user():
     # Add a new user to the password file
     username = input("Enter new username: ")
     real_name = input("Enter real name: ")
-    password = encrypt(getpass.getpass("Enter password: "))
+    password = input("Enter password: ")
+    password = encrypt(password)
 
     with open(PASSWORD_FILE, 'a') as f:
         f.write(f"{username}:{real_name}:{password}\n")

@@ -292,6 +292,6 @@ It took some skill to handle and add extra data when using external resources, l
   
 ### Contact Information
 -	Email: kridesha22@tbc.edu.np
--	GitHub: https://github.com/rk477
+-	GitHub: [rk477](https://github.com/rk477/RideshaKhadka-Final-submission-FOCP/tree/main)
   
  <p align="center">This README.md file serves as documentation for my programming portfolio.</p>
